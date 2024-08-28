@@ -1,16 +1,16 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI; // Jika Anda menggunakan UI Text biasa
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DialogSystem : MonoBehaviour
 {
-    public Text dialogText; // UI Text, gunakan jika menggunakan UI Text biasa
-   
+    public Text dialogText;
 
-    public string[] dialogLines; // Array dialog yang akan diputar
-    private int currentLine = 0; // Baris dialog yang sedang diputar
-    public float typingSpeed = 0.05f; // Kecepatan pengetikan teks
+    public GameObject dialogPanel;
+   
+    public string[] dialogLines;
+    private int currentLine = 0;
+    public float typingSpeed = 0.05f;
 
     private bool isTyping = false;
 
@@ -24,7 +24,7 @@ public class DialogSystem : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) // Tekan Space untuk dialog berikutnya
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (!isTyping)
             {
@@ -32,7 +32,6 @@ public class DialogSystem : MonoBehaviour
             }
             else
             {
-                // Skip to the end of the current line
                 StopAllCoroutines();
                 dialogText.text = dialogLines[currentLine];
                 isTyping = false;
@@ -49,10 +48,7 @@ public class DialogSystem : MonoBehaviour
         }
         else
         {
-            dialogText.text = ""; // Mengosongkan teks setelah dialog selesai
-            SceneManager.LoadScene("Game1");
-            Time.timeScale = 1f;
-    
+            EndDialog();
         }
     }
 
@@ -66,5 +62,16 @@ public class DialogSystem : MonoBehaviour
             yield return new WaitForSeconds(typingSpeed);
         }
         isTyping = false;
+    }
+
+    void EndDialog()
+    {
+        dialogText.text = "";
+
+        if (dialogPanel != null)
+        {
+            dialogPanel.SetActive(false);
+        }
+
     }
 }
