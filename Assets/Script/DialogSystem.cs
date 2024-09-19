@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DialogSystem : MonoBehaviour
 {
@@ -68,10 +69,8 @@ public class DialogSystem : MonoBehaviour
     {
         dialogText.text = "";
 
-        if (dialogPanel != null)
-        {
-            dialogPanel.SetActive(false);
-        }
+        SceneManager.LoadScene("Play");
+        Time.timeScale = 1f;
 
     }
 }
