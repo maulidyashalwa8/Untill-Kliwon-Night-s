@@ -22,7 +22,7 @@ public class Loading : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("MainMenu");
+            SceneManager.LoadScene("Dialog");
         }
         masukanLoadingbar.GetComponent<Image>().fillAmount = nilaiSekarang / 100;
     }
