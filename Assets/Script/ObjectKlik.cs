@@ -12,20 +12,27 @@ public class ObjectKlik : MonoBehaviour
     private int itemsCollected = 0;
     public static bool GameIsPaused = false;
     public GameObject panel;
+    public GameObject penyangga;
+
+    void Start()
+    {
+        UnlockCursor(); // Pastikan kursor terlihat sejak awal
+    }
 
     void Update()
     {
-        // Memeriksa apakah tombol keyboard "E" ditekan
-        if (Input.GetKeyDown(KeyCode.E))
+        // Memeriksa apakah tombol mouse kiri ditekan
+        if (Input.GetMouseButtonDown(0))
         {
-            // Mengambil semua collider item dalam jangkauan
-            Collider[] hitColliders = Physics.OverlapSphere(playerCamera.transform.position, detectionRadius);
+            // Membuat ray dari posisi kamera
+            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
 
-            // Iterasi melalui semua collider yang terdeteksi
-            foreach (var hitCollider in hitColliders)
+            // Jika ray mengenai objek dalam jangkauan
+            if (Physics.Raycast(ray, out hit, detectionRadius))
             {
-                // Mendapatkan referensi ke objek yang bertabrakan
-                GameObject clickedObject = hitCollider.gameObject;
+                // Mendapatkan referensi ke objek yang terkena ray
+                GameObject clickedObject = hit.collider.gameObject;
 
                 // Mengecek apakah objek memiliki tag item
                 if (clickedObject.CompareTag(clickableTag))
@@ -42,6 +49,7 @@ public class ObjectKlik : MonoBehaviour
     {
         // Hancurkan item dan tingkatkan jumlah item yang dikumpulkan
         Destroy(item);
+        Destroy(penyangga);
         itemsCollected++;
         OpenPanel();
 
@@ -90,7 +98,7 @@ public class ObjectKlik : MonoBehaviour
 
     private void UnlockCursor()
     {
-        Cursor.lockState = CursorLockMode.None; // Unlock cursor
-        Cursor.visible = true; // Show cursor
+        Cursor.lockState = CursorLockMode.None; // Pastikan kursor tidak terkunci
+        Cursor.visible = true; // Tampilkan kursor
     }
 }
